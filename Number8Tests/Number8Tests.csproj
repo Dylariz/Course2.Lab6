@@ -38,6 +38,7 @@
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
+        <Reference Include="System.Drawing" />
         <Reference Include="System.Xml"/>
         <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
             <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
@@ -53,8 +54,15 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="PolygonTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Usings.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Number8\Number8.csproj">
+        <Project>{984d141a-1cff-4f9c-81df-eabb5a424445}</Project>
+        <Name>Number8</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

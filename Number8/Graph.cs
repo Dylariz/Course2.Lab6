@@ -32,7 +32,7 @@ namespace Number8
                 e.Graphics.FillEllipse(Brushes.Red, points[0].X - 2, points[0].Y - 2, 3, 3);
 
             if (XPoint != Point.Empty) // Если точка XPoint задана, то рисуем её
-                e.Graphics.FillEllipse(Brushes.Green, XPoint.X - 2, XPoint.Y - 2, 3, 3);
+                e.Graphics.FillEllipse(Brushes.Green, XPoint.X - 2, XPoint.Y - 2, 4, 4);
         }
 
         private void Graph_MouseDown(object sender, MouseEventArgs e)
