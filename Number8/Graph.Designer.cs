@@ -33,24 +33,25 @@
             this.statusLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // pinButton
             // 
             this.pinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.pinButton.Location = new System.Drawing.Point(857, 786);
+            this.pinButton.Location = new System.Drawing.Point(12, 804);
             this.pinButton.Name = "pinButton";
             this.pinButton.Size = new System.Drawing.Size(412, 67);
             this.pinButton.TabIndex = 0;
             this.pinButton.Text = "Закрепить многоугольник";
             this.pinButton.UseVisualStyleBackColor = true;
+            this.pinButton.Click += new System.EventHandler(this.pinButton_Click);
             // 
             // statusLabel
             // 
-            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.statusLabel.Location = new System.Drawing.Point(399, 801);
+            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.statusLabel.Location = new System.Drawing.Point(448, 810);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(382, 43);
+            this.statusLabel.Size = new System.Drawing.Size(679, 64);
             this.statusLabel.TabIndex = 1;
-            this.statusLabel.Text = "Ожидание построения";
+            this.statusLabel.Text = "Статус: Ожидание построения";
             // 
             // Graph
             // 

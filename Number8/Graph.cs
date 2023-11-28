@@ -17,27 +17,22 @@ namespace Number8
             InitializeComponent();
             Polygon = new Polygon();
             IsPolygonFinished = false;
-
-            Invalidate(); // Перерисовываем форму
         }
 
         private void Graph_Paint(object sender, PaintEventArgs e)
         {
-            if (!IsPolygonFinished)
-            {
-                var points = Polygon.Points.ToArray();
+            var points = Polygon.Points.ToArray();
 
-                e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                if (points.Length >= 3)
-                    e.Graphics.DrawPolygon(Pens.Red, points.ToArray()); // Рисуем полигон по точкам из списка Points
-                else if (points.Length == 2)
-                    e.Graphics.DrawLine(Pens.Red, points[0], points[1]); // Рисуем линию по точкам из списка Points
-                else if (points.Length == 1)
-                    DrawPoint(points[0], e); // Рисуем точку
-            }
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            if (points.Length >= 3)
+                e.Graphics.DrawPolygon(Pens.Red, points.ToArray()); // Рисуем полигон по точкам из списка Points
+            else if (points.Length == 2)
+                e.Graphics.DrawLine(Pens.Red, points[0], points[1]); // Рисуем линию по точкам из списка Points
+            else if (points.Length == 1)
+                e.Graphics.FillEllipse(Brushes.Red, points[0].X - 2, points[0].Y - 2, 3, 3);
 
             if (XPoint != Point.Empty) // Если точка XPoint задана, то рисуем её
-                e.Graphics.FillEllipse(Brushes.Red, XPoint.X - 2, XPoint.Y - 2, 3, 3);
+                e.Graphics.FillEllipse(Brushes.Green, XPoint.X - 2, XPoint.Y - 2, 3, 3);
         }
 
         private void Graph_MouseDown(object sender, MouseEventArgs e)
@@ -50,11 +45,10 @@ namespace Number8
                     XPoint = e.Location;
                     statusLabel.Text = Polygon.IsPointInPolygon(XPoint) switch
                     {
-                        1 => "Точка внутри многоугольника",
-                        -1 => "Точка снаружи многоугольника",
+                        1 => "Статус: Точка внутри многоугольника",
+                        -1 => "Статус: Точка снаружи многоугольника",
                         _ => throw new ArgumentOutOfRangeException()
                     };
-                        
                 }
                 else
                     Polygon.AddPoint(e.Location);
@@ -63,17 +57,12 @@ namespace Number8
             }
         }
 
-        private void DrawPoint(Point point, PaintEventArgs e)
-        {
-            e.Graphics.FillEllipse(Brushes.Red, point.X - 2, point.Y - 2, 3, 3);
-        }
-
         private void pinButton_Click(object sender, EventArgs e)
         {
             if (Polygon.IsValid)
             {
                 IsPolygonFinished = true;
-                statusLabel.Text = "Ожидание точки X";
+                statusLabel.Text = "Статус: Ожидание точки X";
             }
             else
             {
