@@ -9,8 +9,8 @@ namespace Number8;
 public partial class Graph : Form
 {
     public Polygon Polygon { get; }
-    public Point XPoint { get; set; }
-    public bool IsPolygonFinished { get; set; }
+    public Point XPoint { get; private set; }
+    public bool IsPolygonFinished { get; private set; }
 
     public Graph()
     {
@@ -25,18 +25,18 @@ public partial class Graph : Form
 
         e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
         if (points.Length >= 3)
-            e.Graphics.DrawPolygon(Pens.Red, points.ToArray()); // Рисуем полигон по точкам из списка Points
+            e.Graphics.DrawPolygon(Pens.Red, points.ToArray()); // Рисуем полигон по точкам
         else if (points.Length == 2)
-            e.Graphics.DrawLine(Pens.Red, points[0], points[1]); // Рисуем линию по точкам из списка Points
+            e.Graphics.DrawLine(Pens.Red, points[0], points[1]); // Рисуем линию по точкам
         else if (points.Length == 1)
-            e.Graphics.FillEllipse(Brushes.Red, points[0].X - 2, points[0].Y - 2, 3, 3);
+            e.Graphics.FillEllipse(Brushes.Red, points[0].X - 2, points[0].Y - 2, 3, 3); // Рисуем точку
 
         if (XPoint != Point.Empty) // Если точка XPoint задана, то рисуем её
             e.Graphics.FillEllipse(Brushes.Green, XPoint.X - 2, XPoint.Y - 2, 5, 5);
     }
+    
     private void Graph_MouseDown(object sender, MouseEventArgs e)
     {
-        // Мышь не наведена на элемент управления
         if (e.Button == MouseButtons.Left)
         {
             if (IsPolygonFinished)
@@ -50,7 +50,9 @@ public partial class Graph : Form
                 };
             }
             else
+            {
                 Polygon.AddPoint(e.Location);
+            }
 
             Invalidate();
         }

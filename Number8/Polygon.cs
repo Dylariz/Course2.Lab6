@@ -5,7 +5,7 @@ using System.Drawing;
 namespace Number8;
 
 /// <summary>
-/// Представляет многоугольник, заданный списком точек по часовой стрелке.
+/// Представляет многоугольник
 /// </summary>
 public class Polygon
 {
