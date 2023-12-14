@@ -1,45 +1,31 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Number3;
 
 namespace Number3Tests;
 
 public class PolygonTests
 {
-    private readonly Polygon _polygon;
-    
-    // public PolygonTests()
-    // {
-    //     _polygon = new Polygon();
-    //     _polygon.AddPoint(new Point(153, 134));
-    //     _polygon.AddPoint(new Point(267, 64));
-    //     _polygon.AddPoint(new Point(365, 123));
-    //     _polygon.AddPoint(new Point(354, 226));
-    //     _polygon.AddPoint(new Point(233, 259));
-    //     _polygon.AddPoint(new Point(110, 262));
-    // }
-    //
-    // [Theory]
-    // [InlineData(243, 139, 1)]
-    // [InlineData(342, 133, 1)]
-    // [InlineData(205, 118, 1)]
-    // [InlineData(153, 134, 1)]
-    // [InlineData(155, 300, -1)]
-    // [InlineData(529, 205, -1)]
-    // [InlineData(330, 92, -1)]
-    // [InlineData(124, 204, -1)]
-    // public void IsPointInPolygon_ReturnsCorrectly(int x, int y, int expected)
-    // {
-    //     var point = new Point(x, y);
-    //     Assert.Equal(expected, _polygon.IsPointInPolygon(point));
-    // }
+    [Theory]
+    [InlineData(new[] { 0, 0, 10, 0, 10, 10, 0, 10 }, false)] // Квадрат
+    [InlineData(new[] { 0, 0, 10, 0, 10, 10, 0, 5, 5, 10 }, true)] // Пятиугольник с одной пересекающейся стороной
+    [InlineData(new[] { 0, 0, 10, 0, 10, 10, 0, 10, 5, 5, 10, 5 }, false)] // Шестиугольник
+    public void IsSelfIntersecting(int[] coordinates, bool expected)
+    {
+        var polygon = new Polygon();
+        for (int i = 0; i < coordinates.Length; i += 2)
+        {
+            polygon.AddPoint(new Point(coordinates[i], coordinates[i + 1]));
+        }
 
+        Assert.Equal(expected, polygon.IsSelfIntersecting());
+    }
+    
     [Fact]
     public void AddPoint()
     {
-        var p1 = new Point(153, 134);
-        var p2 = new Point(267, 64);
-        var p3 = new Point(354, 226);
+        var p1 = new Point(100, 100);
+        var p2 = new Point(200, 50);
+        var p3 = new Point(200, 90);
         var polygon = new Polygon();
         
         Assert.False(polygon.IsValid);
@@ -58,12 +44,35 @@ public class PolygonTests
     }
     
     [Fact]
+    public void AddPoint_CheckSegments()
+    {
+        var p1 = new Point(100, 100);
+        var p2 = new Point(200, 50);
+        var p3 = new Point(200, 90);
+        var polygon = new Polygon();
+
+        polygon.AddPoint(p1);
+        Assert.Empty(polygon.Segments);
+        polygon.AddPoint(p2);
+        Assert.Single(polygon.Segments);
+        Assert.Equal(p1, polygon.Segments[0].A);
+        Assert.Equal(p2, polygon.Segments[0].B);
+
+        polygon.AddPoint(p3);
+        Assert.Equal(3, polygon.Segments.Count);
+        Assert.Equal(p2, polygon.Segments[1].A);
+        Assert.Equal(p3, polygon.Segments[1].B);
+        Assert.Equal(p3, polygon.Segments[2].A);
+        Assert.Equal(p1, polygon.Segments[2].B);
+    }
+    
+    [Fact]
     public void Clear()
     {
         var polygon = new Polygon();
-        polygon.AddPoint(new Point(153, 134));
-        polygon.AddPoint(new Point(267, 64));
-        polygon.AddPoint(new Point(354, 226));
+        polygon.AddPoint(new Point(100, 100));
+        polygon.AddPoint(new Point(200, 50));
+        polygon.AddPoint(new Point(200, 90));
         
         Assert.NotEmpty(polygon.Points);
         polygon.Clear();

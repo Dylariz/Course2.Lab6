@@ -15,16 +15,15 @@ namespace Number3;
 public partial class Graph : Form
 {
     public Polygon Polygon { get; }
-    public Point XPoint { get; private set; }
-    public bool IsPolygonFinished { get; private set; }
 
     public Graph()
     {
         InitializeComponent();
         Polygon = new Polygon();
-        IsPolygonFinished = false;
+        resetButton.Click += (s, a) => ResetToDefault(); // Обработка нажатия кнопки "Сброс"
     }
 
+    // Перерисовка графики, вызывается при вызове Invalidate()
     private void Graph_Paint(object sender, PaintEventArgs e)
     {
         var points = Polygon.Points.ToArray();
@@ -36,34 +35,32 @@ public partial class Graph : Form
             e.Graphics.DrawLine(Pens.Red, points[0], points[1]); // Рисуем линию по точкам
         else if (points.Length == 1)
             e.Graphics.FillEllipse(Brushes.Red, points[0].X - 2, points[0].Y - 2, 3, 3); // Рисуем точку
-
-        if (XPoint != Point.Empty) // Если точка XPoint задана, то рисуем её
-            e.Graphics.FillEllipse(Brushes.Green, XPoint.X - 2, XPoint.Y - 2, 5, 5);
     }
-    
+
+    // Обработка нажатия левой кнопки мыши
     private void Graph_MouseDown(object sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Left)
         {
+            Polygon.AddPoint(e.Location); // Добавляем точку в полигон
 
-            statusLabel.Text = Polygon.IsSelfIntersecting() switch
+            if (Polygon.IsValid) // Если многоугольник завершен
             {
-                true => "Статус: Многоугольник самопересекающийся",
-                false => "Статус: Стороны многоугольника не пересекаются"
-            };
-        
-            Polygon.AddPoint(e.Location);
+                statusLabel.Text = Polygon.IsSelfIntersecting() switch
+                {
+                    true => "Многоугольник самопересекающийся",
+                    false => "Стороны многоугольника не пересекаются"
+                };
+            }
+
             Invalidate();
         }
     }
 
     private void ResetToDefault()
     {
-        IsPolygonFinished = false;
         Polygon.Clear();
-        XPoint = Point.Empty;
-        statusLabel.Text = "Статус: Ожидание построения";
-        pinButton.Text = "Закрепить многоугольник";
+        statusLabel.Text = "Ожидание построения";
         Invalidate();
     }
 }
